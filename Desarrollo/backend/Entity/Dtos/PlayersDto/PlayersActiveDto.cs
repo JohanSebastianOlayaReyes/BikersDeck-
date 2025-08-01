@@ -2,7 +2,7 @@
 
 namespace Entity.Dtos.PizzaDto
 {
-    public class PlayersaActiveDto :BaseDto
+    public class RoomPlayersaActiveDto :BaseDto
     {
         public bool Active { get; set; }
 

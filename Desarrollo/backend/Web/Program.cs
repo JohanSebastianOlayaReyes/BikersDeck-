@@ -37,7 +37,7 @@ builder.Services.AddScoped<IPizzaBusiness, PizzaBusiness>();
 builder.Services.AddScoped<IPedidoData, PedidoData>();
 builder.Services.AddScoped<IPedidoBusiness, PedidoBusiness>();
 
-builder.Services.AddAutoMapper(typeof(ClienteProfile));
+builder.Services.AddAutoMapper(typeof(PlayersProfile));
 builder.Services.AddAutoMapper(typeof(PizzaProfile));
 builder.Services.AddAutoMapper(typeof(PedidoProfile));
 

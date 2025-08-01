@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Business.Interfaces;
+using Entity.Dtos.Base;
+using Entity.Model.Base;
 
-namespace Business.Implements.BaseBusiness
+namespace Business.Implements
 {
-    internal class ABaseBusiness
+
+    public abstract class ABaseBusiness<T, D> : IBaseBusiness<T, D> where T : BaseModel where D : BaseDto
     {
+        public abstract Task<D> GetByIdAsync(int id);
+        public abstract Task<D> UpdateAsync(D dto);
+        public abstract Task<bool> ActiveAsync(int id);
+
+
     }
 }

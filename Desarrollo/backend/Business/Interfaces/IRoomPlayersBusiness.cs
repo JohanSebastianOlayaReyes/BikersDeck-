@@ -1,9 +1,10 @@
-﻿using Entity.Dtos.PizzaDto;
+﻿using Entity.Dtos.PedidoDto;
+using Entity.Dtos.PizzaDto;
 using Entity.Model;
 
 namespace Business.Interfaces
 {
-    public interface IPlayersBusiness : IBaseBusiness<Players, PlayersDto>
+    public interface IRoomPlayersBusiness : IBaseBusiness<RoomPlayers, RoomPlayersDto>
     {
 
         Task<bool> UpdatePartialAsync(PlayersUpdateDto dto);

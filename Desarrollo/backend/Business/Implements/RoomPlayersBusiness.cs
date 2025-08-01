@@ -17,11 +17,12 @@ namespace Business.Implements
     {
         private readonly IRoomPlayersData _clienteData;
         private readonly IValidator<RoomPlayersDto> _validator;
+        private object roomplayersData;
 
         public RoomPlayersBusiness(IRoomPlayersData roomplayersData, IMapper mapper, ILogger<RoomPlayersBusiness> logger)
             : base( roomplayersData, mapper, logger)
         {
-            _rommplayersData = roomplayersData;
+            roomplayersData = roomplayersData;
         }
 
         public async Task<bool> UpdatePartialAsync(RoomPlayersUpdateDto dto)
@@ -31,7 +32,7 @@ namespace Business.Implements
 
             var roomplayers = _mapper.Map<RoomPlayers>(dto);
 
-            return await _clienteData.UpdatePartial(roomplayers);
+            return await roomplayersData.UpdatePartial(roomplayers);
         }
 
         public async Task<bool> ActiveAsync(RoomPlayersaActiveDto dto)
@@ -39,10 +40,10 @@ namespace Business.Implements
             if (dto == null || dto.Id <= 0)
                 throw new ValidationException("Id", "El ID del ... es inválido");
 
-            var exists = await _clienteData.GetByIdAsync(dto.Id)
+            var exists = await roomplayersData.GetByIdAsync(dto.Id)
                 ?? throw new EntityNotFoundException("...", dto.Id);
 
-            return await _clienteData.ActiveAsync(dto.Id, dto.Active);
+            return await roomplayersData.ActiveAsync(dto.Id, dto.Active);
         }
     }
 }

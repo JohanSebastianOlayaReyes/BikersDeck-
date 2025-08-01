@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext
 
     public ApplicationDbContext() { } // Necesario para las migraciones
 
-    public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<Players> Players { get; set; }
     public DbSet<Pizza> Pizzas { get; set; }
     public DbSet<RoomPlayers> Pedidos { get; set; }
 
@@ -25,7 +25,7 @@ public class ApplicationDbContext : DbContext
     {
         // Relación Cliente 1 ---- * Pedido
         modelBuilder.Entity<RoomPlayers>()
-            .HasOne(p => p.Cliente)
+            .HasOne(p => p.Players)
             .WithMany(c => c.Pedidos)
             .HasForeignKey(p => p.ClienteId)
             .OnDelete(DeleteBehavior.Restrict);

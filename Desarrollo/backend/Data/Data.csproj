@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Implements\Card.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Implements\NewFile2.txt" />
+    <None Remove="Interfaces\IPlayersData" />
+    <None Remove="Interfaces\NewFile1.txt" />
+    <None Remove="Interfaces\NewFile2.txt" />
+    <None Remove="Interfaces\NewFile3.txt" />
+    <None Remove="Interfaces\NewFile4.txt" />
+    <None Remove="Interfaces\NewFile5.txt" />
+    <None Remove="Interfaces\NewFile6.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CrmSdk.Deployment" Version="9.0.2.34" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Entity\Entity.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

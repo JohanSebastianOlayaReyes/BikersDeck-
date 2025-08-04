@@ -9,9 +9,5 @@ namespace Business.Interfaces
 
         Task<bool> UpdatePartialPlayerAsync(UpdatePlayersDto dto);
         Task<bool> DeleteLogicPlayerAsync(DeleteLogicPlayersDto dto);
-        int Quantity(int QuantityPlayer);
-        void RegisterPlayers(int PlayersId, string NamePlayers);
-        List<string> GetPlayers(int PlayersId);
-        int GetQuantity(int PlayersId);
     }
 }

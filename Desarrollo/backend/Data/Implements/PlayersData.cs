@@ -40,20 +40,5 @@ namespace Data.Implements.BaseData
             await _context.SaveChangesAsync();
             return true;
         }
-
-        //metodo para guardar la cantidad de jugadores
-        private readonly Dictionary<int, int> _players = new();
-        private int _playerIdCounter = 1;
-
-        public int Quantity(int QuantityPlayer)
-        {
-            int id = _playerIdCounter++;
-            _players[id] = QuantityPlayer;
-            return id;
-        }
-        public int GetQuantity(int PlayersId)
-        {
-            return _players.TryGetValue(PlayersId, out int Quantity) ? Quantity : 0;
-        }
     }
 }

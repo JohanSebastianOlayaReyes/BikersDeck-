@@ -153,3 +153,34 @@ if (typeof module !== 'undefined' && module.exports) {
     };
 }
 
+
+//conectado a la base de datos 
+    function selectPlayers(cantidad) {
+    const dto = {
+      id: 0, 
+      status: true,
+      quantityPlayers: cantidad
+    };
+
+    fetch('http://localhost:7147/api/players', { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dto)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Error al registrar jugadores");
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(`Se registraron ${cantidad} jugadores`);
+      console.log("Respuesta del servidor:", data);
+    })
+    .catch(error => {
+      console.error("Error al enviar datos:", error);
+      alert("Error al registrar jugadores");
+    });
+  }

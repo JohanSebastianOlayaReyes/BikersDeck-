@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BIKERS DECK - Triple J</title>
-  <link rel="stylesheet" href="/Css/cantJugadores.css" />
+  <link rel="stylesheet" href="/Css/cantJugadores.css">
+  <link rel="script" href="/js/cantJugadores.js">
 </head>
 <body>
   <!-- Botón cartas en esquina superior derecha -->
@@ -15,7 +16,6 @@
     <img src="/Img/bike-icon.png" alt="Logo Bikers Deck" class="logo-image">
   </div>
 
-  <!-- PANTALLA 1: Selección de jugadores -->
   <div id="pantallaSeleccion" class="main-container">
     <div class="selection-title">
       Elige la cantidad de<br />jugadores
@@ -37,14 +37,6 @@
     <button class="continue-btn" id="continueBtn" onclick="continueGame()" style="display: none;">
       Continuar
     </button>
-  </div>
-
-  <!-- PANTALLA 2: Nombres de jugadores -->
-  <div id="pantallaNombres" class="main-container" style="display: none;">
-    <div class="selection-title">Ingresa los nombres de los jugadores</div>
-    <div id="inputsContainer" class="players-grid" style="grid-template-columns: 1fr;"></div>
-
-    <button class="continue-btn" onclick="startGame()">Iniciar juego</button>
   </div>
 
   <script src="/js/cantJugadores.js"></script>

@@ -7,6 +7,8 @@ namespace Entity.Model
         public int QuantityCards { get; set; }
         public Game Game { get; set; }
         public int GameId { get; set; }
-        public ICollection<Card> Cards { get; set; }
+        public Card card { get; set; }
+        public int CardId { get; set; } 
+
     }
 }

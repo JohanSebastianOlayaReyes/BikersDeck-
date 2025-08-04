@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250804140714_InitialCreate")]
+    [Migration("20250804192705_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -45,9 +45,6 @@ namespace Entity.Migrations
                     b.Property<int>("Displacement")
                         .HasColumnType("int");
 
-                    b.Property<int>("MazoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -64,10 +61,6 @@ namespace Entity.Migrations
                     b.Property<int>("model")
                         .HasColumnType("int");
 
-                    b.Property<string>("photo")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<decimal>("power")
                         .HasColumnType("decimal(65,30)");
 
@@ -75,8 +68,6 @@ namespace Entity.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MazoId");
 
                     b.ToTable("Cards");
                 });
@@ -122,6 +113,9 @@ namespace Entity.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CardId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -141,6 +135,8 @@ namespace Entity.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CardId");
 
                     b.HasIndex("GameId");
 
@@ -193,8 +189,9 @@ namespace Entity.Migrations
                     b.Property<DateTime?>("DeleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("NamePlayer")
-                        .HasColumnType("int");
+                    b.Property<string>("NamePlayer")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("PlayersId")
                         .HasColumnType("int");
@@ -282,17 +279,6 @@ namespace Entity.Migrations
                     b.ToTable("Turns");
                 });
 
-            modelBuilder.Entity("Entity.Model.Card", b =>
-                {
-                    b.HasOne("Entity.Model.Mazo", "Mazo")
-                        .WithMany("Cards")
-                        .HasForeignKey("MazoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Mazo");
-                });
-
             modelBuilder.Entity("Entity.Model.Game", b =>
                 {
                     b.HasOne("Entity.Model.RoomPlayers", "RoomPlayers")
@@ -306,6 +292,12 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Model.Mazo", b =>
                 {
+                    b.HasOne("Entity.Model.Card", "card")
+                        .WithMany("Mazos")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Entity.Model.Game", "Game")
                         .WithMany("Mazos")
                         .HasForeignKey("GameId")
@@ -313,6 +305,8 @@ namespace Entity.Migrations
                         .IsRequired();
 
                     b.Navigation("Game");
+
+                    b.Navigation("card");
                 });
 
             modelBuilder.Entity("Entity.Model.RoomPlayers", b =>
@@ -348,16 +342,16 @@ namespace Entity.Migrations
                     b.Navigation("Round");
                 });
 
+            modelBuilder.Entity("Entity.Model.Card", b =>
+                {
+                    b.Navigation("Mazos");
+                });
+
             modelBuilder.Entity("Entity.Model.Game", b =>
                 {
                     b.Navigation("Mazos");
 
                     b.Navigation("Rounds");
-                });
-
-            modelBuilder.Entity("Entity.Model.Mazo", b =>
-                {
-                    b.Navigation("Cards");
                 });
 
             modelBuilder.Entity("Entity.Model.Players", b =>

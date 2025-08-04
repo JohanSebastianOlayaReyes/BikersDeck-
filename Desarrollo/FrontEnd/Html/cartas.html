@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Css/cartas.css">
+    <link rel="script" href="/js/cartas.Js">
+    <title>Cartas del Juego</title>
+</head>
+<body>
+    <div class="background-bikes"></div>
+    
+    <div class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Cartas del juego</h2>
+                <a href="/Html/cantJugadores.html">
+                <button class="close-btn" onclick="closeModal()">✕</button>
+                </a>
+            </div>
+            
+            <div class="modal-content">
+                <div class="cards-grid" id="cardsGrid">
+                    <!-- Las cartas se generarán aquí -->
+
+                    <!-- YAMAHA -->
+                <img src="/Img/motos/MT07.png" alt="card" class="card">
+                <img src="/Img/motos/XJ6.png" alt="card" class="card">
+                <img src="/Img/motos/R1M.png" alt="card" class="card">
+                <img src="/Img/motos/YZRFR6.png" alt="card" class="card">
+                <img src="/Img/motos/MT09.png" alt="card" class="card">
+                <img src="/Img/motos/MT10.png" alt="card" class="card">
+                <img src="/Img/motos/TRACER900.png" alt="card" class="card">
+                <img src="/Img/motos/FZ8.png" alt="card" class="card">
+
+                    <!-- KAWASAKI -->
+                <img src="/Img/motos/Z1000.png" alt="card" class="card">
+                <img src="/Img/motos/H2R.png" alt="card" class="card">
+                <img src="/Img/motos/ZX10R.png" alt="card" class="card">
+                <img src="/Img/motos/ZH2.png" alt="card" class="card">
+                <img src="/Img/motos/Z900.png" alt="card" class="card">
+                <img src="/Img/motos/NINJA 650.png" alt="card" class="card">
+                <img src="/Img/motos/VERSYS 650.png" alt="card" class="card">
+                <img src="/Img/motos/ER6N.png" alt="card" class="card">
+
+                    <!-- KTM -->
+                <img src="/Img/motos/SuperDuke1390.png" alt="card" class="card">
+                <img src="/Img/motos/KTM990Duke.png" alt="card" class="card">
+                <img src="/Img/motos/KTM390Duke.png" alt="card" class="card">
+                <img src="/Img/motos/KTM1290SuperDukeGT.png" alt="card" class="card">
+                <img src="/Img/motos/KTMRC390.png" class="card">
+                <img src="/Img/motos/KTM690SMCR.png" alt="card" class="card">
+                <img src="/Img/motos/KTM390EnduroR.png" alt="card" class="card">
+                <img src="/Img/motos/KTM1390SuperAdventureR.png" alt="card" class="card">
+
+                    <!-- DUCATI -->
+                <img src="/Img/motos/PANIGALEV4.png" alt="card" class="card">
+                <img src="/Img/motos/DIAVEL.png" alt="card" class="card">
+                <img src="/Img/motos/MULTISTRADA.png" alt="card" class="card">
+                <img src="/Img/motos/STREETFIGHTER.png" alt="card" class="card">
+                <img src="/Img/motos/STREETFIGHTER.png" alt="card" class="card">
+                <img src="/Img/motos/SUPERLEGGERA.png" alt="card" class="card">
+                <img src="/Img/motos/HYPERMOTORD.png" alt="card" class="card">
+                <img src="/Img/motos/MONSTER.png" alt="card" class="card">
+                    <!-- BMW -->
+                <img src="/Img/motos/M1000RR.png" alt="card" class="card">
+                <img src="/Img/motos/1200GS.png" alt="card" class="card">
+                <img src="/Img/motos/S1000R.png" alt="card" class="card">
+                <img src="/Img/motos/M1000R.png" alt="card" class="card">
+                <img src="/Img/motos/K1000R.png" alt="card" class="card">
+                <img src="/Img/motos/BMW.png" alt="card" class="card">
+                <img src="/Img/motos/800GS.png" alt="card" class="card">
+                <img src="/Img/motos/S1000RR.png" alt="card" class="card">
+
+                    <!-- HONDA -->
+                <img src="/Img/motos/CBR1000RR.png" alt="card" class="card">
+                <img src="/Img/motos/HORNET.png" alt="card" class="card">
+                <img src="/Img/motos/CBR650R.png" alt="card" class="card">
+                <img src="/Img/motos/CB650R.png" alt="card" class="card">
+                <img src="/Img/motos/NT1100.png" alt="card" class="card">
+                <img src="/Img/motos/CMX500.png" alt="card" class="card">
+                <img src="/Img/motos/AFRICATWIN.png" alt="card" class="card">
+                <img src="/Img/motos/X-ADV.png" alt="card" class="card">
+                    <!-- TRIUMPH -->
+                <img src="/Img/motos/RS765.png" alt="card" class="card">
+                <img src="/Img/motos/TIGER900.png" alt="card" class="card">
+                <img src="/Img/motos/ROCKET3R.png" alt="card" class="card">
+                <img src="/Img/motos/TWIN1200.png" alt="card" class="card">
+                <img src="/Img/motos/SCRAMBLER900.png" alt="card" class="card">
+                <img src="/Img/motos/BOBER1200.png" alt="card" class="card">
+                <img src="/Img/motos/TIGERSPORT660.png" alt="card" class="card">
+                <img src="/Img/motos/TRIDENT660.png" alt="card" class="card">
+                
+                </div>
+            </div>
+            
+            <div class="bottom-nav">
+                <button class="nav-btn" onclick="previousPage()" title="Página anterior">‹</button>
+                <button class="nav-btn" onclick="scrollToTop()" title="Ir arriba">↑</button>
+                <button class="nav-btn" onclick="nextPage()" title="Página siguiente">›</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

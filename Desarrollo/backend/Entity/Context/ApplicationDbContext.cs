@@ -61,10 +61,10 @@ namespace Back_end.Context
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Relación: Mazo (1) ---> (n) Card
-            modelBuilder.Entity<Card>()
-                .HasOne(c => c.Mazo)
-                .WithMany(m => m.Cards)
-                .HasForeignKey(c => c.MazoId)
+            modelBuilder.Entity<Mazo>()
+                .HasOne(c => c.card)
+                .WithMany(m => m.Mazos)
+                .HasForeignKey(c => c.CardId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Relación: Game (1) ---> (n) Rounds

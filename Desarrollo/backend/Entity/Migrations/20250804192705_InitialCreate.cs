@@ -16,6 +16,31 @@ namespace Entity.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Cards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Displacement = table.Column<int>(type: "int", nullable: false),
+                    power = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Torque = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    speed = table.Column<int>(type: "int", nullable: false),
+                    model = table.Column<int>(type: "int", nullable: false),
+                    CylinderNumber = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DeleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cards", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
@@ -39,7 +64,8 @@ namespace Entity.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    NamePlayer = table.Column<int>(type: "int", nullable: false),
+                    NamePlayer = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Avatar = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PlayersId = table.Column<int>(type: "int", nullable: false),
@@ -93,6 +119,7 @@ namespace Entity.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     QuantityCards = table.Column<int>(type: "int", nullable: false),
                     GameId = table.Column<int>(type: "int", nullable: false),
+                    CardId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     DeleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -101,6 +128,12 @@ namespace Entity.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Mazos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Mazos_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Mazos_Games_GameId",
                         column: x => x.GameId,
@@ -136,40 +169,6 @@ namespace Entity.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Cards",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    photo = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Displacement = table.Column<int>(type: "int", nullable: false),
-                    power = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Torque = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    speed = table.Column<int>(type: "int", nullable: false),
-                    model = table.Column<int>(type: "int", nullable: false),
-                    CylinderNumber = table.Column<int>(type: "int", nullable: false),
-                    MazoId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DeleteAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cards", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cards_Mazos_MazoId",
-                        column: x => x.MazoId,
-                        principalTable: "Mazos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Turns",
                 columns: table => new
                 {
@@ -197,14 +196,14 @@ namespace Entity.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cards_MazoId",
-                table: "Cards",
-                column: "MazoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Games_RoomPlayersId",
                 table: "Games",
                 column: "RoomPlayersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mazos_CardId",
+                table: "Mazos",
+                column: "CardId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Mazos_GameId",
@@ -231,13 +230,13 @@ namespace Entity.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cards");
+                name: "Mazos");
 
             migrationBuilder.DropTable(
                 name: "Turns");
 
             migrationBuilder.DropTable(
-                name: "Mazos");
+                name: "Cards");
 
             migrationBuilder.DropTable(
                 name: "Rounds");

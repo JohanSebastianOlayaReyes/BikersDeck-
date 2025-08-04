@@ -4,7 +4,6 @@ namespace Entity.Dtos.PizzaDto
 {
     public class CardDto : GenericDto
     {
-        public string photo { get; set; }
         public string Name { get; set; }
         public int Displacement { get; set; }
         public decimal power { get; set; }

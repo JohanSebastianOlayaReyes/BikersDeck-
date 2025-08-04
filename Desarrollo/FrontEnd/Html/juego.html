@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Carreras de Motos</title>
+    <link rel="stylesheet" href="/Css/juego.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Área principal del juego -->
+        <div class="main-game-area">
+
+            <div class="player player-1">
+                <div class="player-avatar">
+                    <img src="/Img/avatars/avatar1.png" alt="Jugador 1">
+                </div>
+                <div class="player-number">8</div>
+                <div class="player-name">Jugador 1</div>
+                <div class="player-card"></div>
+            </div>
+
+            <div class="player player-2">
+                <div class="player-avatar">
+                    <img src="/Img/avatars/avatar4.png" alt="Jugador 1">
+                </div>
+                <div class="player-number">8</div>
+                <div class="player-name">Jugador 2</div>
+                <div class="player-card"></div>
+            </div>
+
+            <div class="player player-3">
+                <div class="player-avatar">
+                    <img src="/Img/avatars/avatar2.png" alt="Jugador 1">
+                </div>
+                <div class="player-number">8</div>
+                <div class="player-name">Jugador 3</div>
+                <div class="player-card"></div>
+            </div>
+
+            <div class="player player-4">
+                <div class="player-avatar">
+                    <img src="/Img/avatars/avatar5.png" alt="Jugador 1">
+                </div>
+                <div class="player-number">8</div>
+                <div class="player-name">Jugador 4</div>
+                <div class="player-card"></div>
+            </div>
+
+            <div class="player player-5">
+                <div class="player-avatar">
+                    <img src="/Img/avatars/avatar8.png" alt="Jugador 1">
+                </div>
+                <div class="player-number">8</div>
+                <div class="player-name">Jugador 5</div>
+                <div class="player-card"></div>
+            </div>
+
+            <div class="player player-6">
+                <div class="player-avatar">
+                    <img src="/Img/avatars/avatar10.png" alt="Jugador 1">
+                </div>
+                <div class="player-number">8</div>
+                <div class="player-name">Jugador 6</div>
+                <div class="player-card"></div>
+            </div>
+
+            <div class="player player-7">
+                <div class="player-avatar">
+                    <img src="/Img/avatars/avatar2.png" alt="Jugador 1">
+                </div>
+                <div class="player-number">8</div>
+                <div class="player-name">Jugador 7</div>
+                <div class="player-card"></div>
+            </div>
+        </div>
+        <!-- Panel inferior con cartas -->
+        <div class="bottom-panel">
+            <div class="timer-left">
+                <div class="timer-label">Tiempo restante de partida</div>
+                <div class="timer-value" id="gameTimer">8:00</div>
+            </div>
+
+            <div class="cards-container">
+                <div class="card card-blue" data-card="yamaha">
+                        <img src="/Img/motos/XJ6.png" alt="Yamaha" class="bike-image">
+                </div>
+
+                <div class="card card-green" data-card="kawasaki">
+                        <img src="/Img/motos/H2R.png" alt="Kawasaki" class="bike-image">
+                </div>
+
+                <div class="card card-orange" data-card="ktm">
+                        <img src="/Img/motos/KTM990Duke.png" alt="KTM 990" class="bike-image">
+                </div>
+
+                <div class="card card-gray" data-card="bmw">
+                        <img src="/Img/motos/M1000R.png" alt="BMW M1" class="bike-image">
+                </div>
+
+                <div class="card card-red" data-card="ducati">
+                        <img src="/Img/motos/X-ADV.png" alt="DUCATI" class="bike-image">
+                </div>
+
+                <div class="card card-pink" data-card="honda">
+                        <img src="/Img/motos/MONSTER.png" alt="HONDA X" class="bike-image">
+                </div>
+
+                <div class="card card-yellow" data-card="triumph">
+                        <img src="/Img/motos/RS765.png" alt="TRIUMPH TRIPLE" class="bike-image">
+                </div>
+            </div>
+
+            <div class="timer-right">
+                <div class="timer-label">Tiempo restante para el jugador</div>
+                <div class="timer-value" id="playerTimer">30s</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/js/juego.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 ﻿using Business.Implements;
+using Business.Interfaces;
 using Entity.Dtos.PizzaDto;
 using Entity.Dtos.PlayersDto;
 using Entity.Model;
@@ -11,9 +12,9 @@ namespace WebApplication1.Controllers.Implements
     [Route("api/[controller]")]
     public class PlayersController : GenericController<PlayersDto, Players>, IPlayersController
     {
-        private readonly PlayerBusiness _playersBusiness;
+        private readonly IPlayerBusiness _playersBusiness;
 
-        public PlayersController(PlayerBusiness playersBusiness, ILogger<PlayersController> logger)
+        public PlayersController(IPlayerBusiness playersBusiness, ILogger<PlayersController> logger)
             : base(playersBusiness, logger)
         {
             _playersBusiness = playersBusiness;

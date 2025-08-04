@@ -9,7 +9,6 @@ namespace Entity.Dto.Client
 {
     public class UpdateCard : BaseDto
     {
-        public string photo { get; set; }
         public string Name { get; set; }
         public int Displacement { get; set; }
         public decimal power { get; set; }

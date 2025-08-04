@@ -21,6 +21,12 @@ function initializeApp() {
         totalPlayersCount = parseInt(playersFromUrl);
     }
     
+    // También verificar localStorage por si viene de otra pantalla
+    const storedPlayers = localStorage.getItem('selectedPlayersCount');
+    if (storedPlayers && !isNaN(storedPlayers)) {
+        totalPlayersCount = parseInt(storedPlayers);
+    }
+    
     updateDisplay();
     updateProgress();
     playerInput.focus();
@@ -92,17 +98,25 @@ function finishPlayerSetup() {
         return name.charAt(0).toUpperCase() + name.slice(1);
     });
     
+    // Guardar toda la información necesaria
     localStorage.setItem('playerNames', JSON.stringify(finalNames));
     localStorage.setItem('totalPlayers', totalPlayersCount.toString());
+    localStorage.setItem('selectedPlayersCount', totalPlayersCount.toString());
+    
+    // Crear array de jugadores con avatares por defecto
+    const playersData = finalNames.map((name, index) => ({
+        name: name,
+        avatar: `avatar${(index % 4) + 1}.png` // Cicla entre avatar1.png a avatar4.png
+    }));
+    
+    localStorage.setItem('playersData', JSON.stringify(playersData));
     
     // Mostrar mensaje de finalización
     showSuccess('¡Configuración completa!');
     
     // Redirigir a la siguiente pantalla después de 2 segundos
     setTimeout(() => {
-        // Aquí puedes redirigir a la pantalla del juego
         window.location.href = 'lobby.html';
-        alert(`¡Configuración completa!\n\nJugadores: ${finalNames.join(', ')}\n\n¡Listos para jugar!`);
     }, 2000);
 }
 
@@ -208,6 +222,7 @@ playerInput.addEventListener('input', function() {
 // Función para establecer número de jugadores (desde otra pantalla)
 function setTotalPlayers(count) {
     totalPlayersCount = count;
+    localStorage.setItem('selectedPlayersCount', count.toString());
     updateDisplay();
     updateProgress();
 }
@@ -246,6 +261,8 @@ function resetPlayerSetup() {
     playerInput.focus();
     localStorage.removeItem('playerNames');
     localStorage.removeItem('totalPlayers');
+    localStorage.removeItem('selectedPlayersCount');
+    localStorage.removeItem('playersData');
 }
 
 // Funciones para navegar entre pantallas (para integrar con otras pantallas)

@@ -3,25 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cambiar Avatar</title>
+    <title>Selección de Avatares</title>
     <link rel="stylesheet" href="/Css/lobby.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Selecciona tu Avatar</h1>
-
-        <div class="players-list" id="playersList">
-            <!-- Tarjetas de jugadores se llenan desde JS -->
+    <div class="main-container">
+        <!-- Botón de cerrar -->
+        <div class="close-button">
+            <button class="btn-close">✕</button>
         </div>
 
-        <div class="avatar-selector" id="avatarSelector" style="display:none;">
-            <h2>Elige un nuevo avatar</h2>
-            <div class="avatars" id="avatarOptions">
-                <!-- Avatares disponibles -->
-                <img src="/Img/avatar1.png" alt="avatar1" onclick="selectAvatar('avatar1.png')">
-                <img src="/Img/avatar2.png" alt="avatar2" onclick="selectAvatar('avatar2.png')">
+        <!-- Título -->
+        <div class="title-section">
+            <h1 class="screen-title">Personaliza tu Avatar</h1>
+            <p class="screen-subtitle">Toca en cualquier jugador para cambiar su avatar</p>
+        </div>
+
+        <!-- Contenedor de jugadores -->
+        <div class="players-container" id="playersContainer">
+            <!-- Los jugadores se generarán dinámicamente aquí -->
+        </div>
+
+        <!-- Botón iniciar -->
+        <div class="start-container">
+            <button class="play-button" id="btnStart">Iniciar Juego</button>
+        </div>
+
+        <!-- Modal de selección de avatar -->
+        <div class="avatar-modal" id="avatarModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Elige un Avatar</h2>
+                    <button class="modal-close" id="modalClose">✕</button>
+                </div>
+                <div class="avatar-grid" id="avatarGrid">
+                    <!-- Los avatares disponibles se cargarán aquí -->
+                </div>
             </div>
-            <button onclick="cancelSelection()">Cancelar</button>
         </div>
     </div>
 

@@ -30,7 +30,7 @@ namespace Data.Implements.BaseData
             if (existingCard == null)
                 return false;
 
-            existingCard.photo = card.photo;
+
             existingCard.Name = card.Name;
             existingCard.Displacement = card.Displacement;
             existingCard.power = card.power;
@@ -39,7 +39,6 @@ namespace Data.Implements.BaseData
             existingCard.model = card.model;
             existingCard.CylinderNumber = card.CylinderNumber;
 
-            _context.Entry(existingCard).Property(c => c.photo).IsModified = true;
             _context.Entry(existingCard).Property(c => c.Name).IsModified = true;
             _context.Entry(existingCard).Property(c => c.Displacement).IsModified = true;
             _context.Entry(existingCard).Property(c => c.power).IsModified = true;

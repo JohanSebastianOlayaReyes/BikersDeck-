@@ -4,7 +4,6 @@ namespace Entity.Model
 {
     public class Card : GenericBase
     {
-        public string photo { get; set; }
         public string Name { get; set; }
         public int Displacement { get; set; }
         public decimal power { get; set; }
@@ -12,7 +11,6 @@ namespace Entity.Model
         public int speed { get; set; }
         public int model { get; set; }
         public int CylinderNumber { get; set; }
-        public Mazo Mazo { get; set; }
-        public int MazoId { get; set; }
+        public ICollection<Mazo> Mazos { get; set; }
     }
 }

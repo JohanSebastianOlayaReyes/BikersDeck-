@@ -1,30 +1,63 @@
-﻿using Business.Implements;
+﻿using Microsoft.AspNetCore.Mvc;
+using Business.Interfaces;
 using Entity.Dtos.PizzaDto;
-using Entity.Dtos.PlayersDto;
-using Entity.Model;
-using Microsoft.AspNetCore.Mvc;
-using Web.Controllers.Implements;
-using WebApplication1.Controllers.Interface;
 
-namespace WebApplication1.Controllers.Implements
+namespace Api.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class PlayersController : GenericController<PlayersDto, Players>, IPlayersController
+    public class PlayersController : ControllerBase
     {
-        private readonly PlayerBusiness _playersBusiness;
+        private readonly IPlayerBusiness _playerBusiness;
+        private readonly ILogger<PlayersController> _logger;
 
-        public PlayersController(PlayerBusiness playersBusiness, ILogger<PlayersController> logger)
-            : base(playersBusiness, logger)
+        public PlayersController(IPlayerBusiness playerBusiness, ILogger<PlayersController> logger)
         {
-            _playersBusiness = playersBusiness;
+            _playerBusiness = playerBusiness;
+            _logger = logger;
         }
 
-        protected override int GetEntityId(PlayersDto dto)
+        [HttpPost("crear-sala")]
+        public IActionResult CrearSala([FromQuery] int cantidad)
         {
-            return dto.Id;
+            var salaId = _playerBusiness.Quantity(cantidad);
+            return Ok(new { SalaId = salaId });
         }
 
-        [HttpPatch("{id}")]
+        [HttpPost("registrar-jugador")]
+        public IActionResult RegistrarJugador([FromQuery] int playersId, [FromQuery] string namePlayers)
+        {
+            try
+            {
+                _playerBusiness.RegisterPlayers(playersId, namePlayers);
+                return Ok(new { Mensaje = "Jugador registrado correctamente." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al registrar jugador");
+                return StatusCode(500, new { Error = "Error interno del servidor" });
+            }
+        }
+
+        [HttpGet("jugadores/{playersId}")]
+        public IActionResult ObtenerJugadores(int playersId)
+        {
+            var jugadores = _playerBusiness.GetPlayers(playersId);
+            return Ok(jugadores);
+        }
+
+        [HttpGet("faltantes/{playersId}")]
+        public IActionResult ObtenerCantidadRestante(int playersId)
+        {
+            var faltantes = _playerBusiness.GetQuantity(playersId);
+            return Ok(new { Faltantes = faltantes });
+        }
+
+        [HttpPatch("actualizar/{id}")]
         public async Task<IActionResult> UpdatePartialPlayers(int id, [FromBody] UpdatePlayersDto dto)
         {
             try
@@ -32,40 +65,41 @@ namespace WebApplication1.Controllers.Implements
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var result = await _playersBusiness.UpdatePartialPlayerAsync(dto);
+                dto.Id = id;
+                var result = await _playerBusiness.UpdatePartialPlayerAsync(dto);
                 return Ok(new { Success = result });
             }
             catch (ArgumentException ex)
             {
-                _logger.LogError($"Error de validación al actualizar parcialmente Player: {ex.Message}");
+                _logger.LogError($"Error de validación: {ex.Message}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar parcialmente Player: {ex.Message}");
+                _logger.LogError(ex, "Error al actualizar jugador");
                 return StatusCode(500, "Error interno del servidor");
             }
         }
 
-        [HttpDelete("logic/{id}")]
+        [HttpPatch("eliminar-logico/{id}")]
         public async Task<IActionResult> DeleteLogicPlayers(int id)
         {
             try
             {
                 var dto = new DeleteLogicPlayersDto { Id = id, Status = false };
-                var result = await _playersBusiness.DeleteLogicPlayerAsync(dto);
+                var result = await _playerBusiness.DeleteLogicPlayerAsync(dto);
                 if (!result)
                     return NotFound($"Jugador con ID {id} no encontrado");
                 return Ok(new { Success = true });
             }
             catch (ArgumentException ex)
             {
-                _logger.LogError($"Error de validación al eliminar lógicamente Player: {ex.Message}");
+                _logger.LogError($"Error de validación: {ex.Message}");
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar lógicamente Player: {ex.Message}");
+                _logger.LogError(ex, "Error al eliminar lógicamente jugador");
                 return StatusCode(500, "Error interno del servidor");
             }
         }

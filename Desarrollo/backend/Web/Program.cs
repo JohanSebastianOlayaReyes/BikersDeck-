@@ -25,6 +25,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 });
 
 // Add controllers
+builder.Services.AddControllers();
 
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
@@ -93,6 +94,9 @@ builder.Services.AddScoped<ITurnBusiness, TurnBusiness>();
 
 // Registrar logging
 builder.Services.AddLogging();
+
+// Registrar servicios de autorización
+builder.Services.AddAuthorization();
 
 // AutoMapper
 

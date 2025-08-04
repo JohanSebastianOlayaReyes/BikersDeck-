@@ -33,13 +33,31 @@ namespace Data.Implements.BaseData
             // Solo se actualizan campos permitidos
             existingRoomPlayer.NamePlayer = roomPlayer.NamePlayer;
             existingRoomPlayer.Avatar = roomPlayer.Avatar;
-     
+
 
             _context.Entry(existingRoomPlayer).Property(rp => rp.NamePlayer).IsModified = true;
             _context.Entry(existingRoomPlayer).Property(rp => rp.Avatar).IsModified = true;
 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        //metodo para registrar y guardar nombres jugadores  
+        private Dictionary<int, List<string>> _roomPlayers = new();
+
+        public void RegisterPlayers(int PlayersId, string NamePlayers)
+        {
+            if (!_roomPlayers.ContainsKey(PlayersId))
+                _roomPlayers[PlayersId] = new List<string>();
+
+            _roomPlayers[PlayersId].Add(NamePlayers);
+        }
+
+        public List<string> GetPlayers(int PlayersId)
+        {
+            return _roomPlayers.ContainsKey(PlayersId)
+                ? _roomPlayers[PlayersId]
+                : new List<string>();
         }
     }
 }

@@ -1,47 +1,52 @@
 ﻿using AutoMapper;
 using Business.Interfaces;
-using Data.Implements;
-using Data.Interfaces;
-using Entity.Dtos.ClienteDto;
+using Data.Interface;
 using Entity.Dtos.PizzaDto;
+using Entity.Dtos.PlayersDto;
 using Entity.Model;
-using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Utilities.Exceptions;
-using ValidationException = Utilities.Exceptions.ValidationException;
 
 namespace Business.Implements
 {
-    public class PlayersBusiness : BaseBusiness<Players, PlayersDto>, IPlayersBusiness
+    public class PlayerBusiness : BaseBusiness<Players, PlayersDto>, IPlayerBusiness
     {
-        private readonly IPlayersData _PlayersData;
-        private readonly IValidator<PlayersDto> _validator;
+        private readonly IPlayerData _playerData;
 
-        public PlayersBusiness(IPlayersData playersData, IMapper mapper, ILogger<PlayersBusiness> logger)
-            : base(playersData, mapper, logger)
+        public PlayerBusiness(
+            IPlayerData playerData,
+            IMapper mapper,
+            ILogger<PlayerBusiness> logger)
+            : base(playerData, mapper, logger)
         {
-            _PlayersData = playersData;
+            _playerData = playerData;
         }
 
-        public async Task<bool> UpdatePartialAsync(PlayersUpdateDto dto)
+        /// <summary>
+        /// Actualiza parcialmente un jugador existente.
+        /// </summary>
+        public async Task<bool> UpdatePartialPlayerAsync(UpdatePlayersDto dto)
         {
-            if (dto == null || dto.Id == 0)
-                return false;
+            if (dto.Id <= 0)
+                throw new ArgumentException("ID inválido.");
 
-            var players = _mapper.Map<Players>(dto);
-
-            return await _PlayersData.UpdatePartial(players);
+            var player = _mapper.Map<Players>(dto);
+            var result = await _playerData.UpdatePartial(player);
+            return result;
         }
 
-        public async Task<bool> ActiveAsync(RoomPlayersaActiveDto dto)
+        /// <summary>
+        /// Desactiva un jugador (eliminación lógica).
+        /// </summary>
+        public async Task<bool> DeleteLogicPlayerAsync(DeleteLogicPlayersDto dto)
         {
             if (dto == null || dto.Id <= 0)
-                throw new ValidationException("Id", "El ID del ... es inválido");
+                throw new ValidationException("Id", "El ID del jugador es inválido.");
 
-            var exists = await _PlayersData.GetByIdAsync(dto.Id)
-                ?? throw new EntityNotFoundException("...", dto.Id);
+            var exists = await _playerData.GetByIdAsync(dto.Id)
+                ?? throw new EntityNotFoundException("jugador", dto.Id);
 
-            return await _PlayersData.ActiveAsync(dto.Id, dto.Active);
+            return await _playerData.ActiveAsync(dto.Id, dto.Status);
         }
     }
 }

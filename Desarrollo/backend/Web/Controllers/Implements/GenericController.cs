@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Business.Interfaces;
-using Entity.Model.Base;
+﻿using Business.Interfaces;
+using Entity.Dto;
 using Entity.Dtos.Base;
+using Entity.Model;
+using Entity.Model.Base;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.Implements
 {
@@ -18,7 +20,7 @@ namespace Web.Controllers.Implements
             _business = business;
             _logger = logger;
         }
-   
+
 
 
 
@@ -119,7 +121,6 @@ namespace Web.Controllers.Implements
                 return StatusCode(500, "Error interno del servidor");
             }
         }
-    
 
         // Método abstracto para obtener el ID de la entidad creada para el CreatedAtAction
         protected abstract int GetEntityId(TDto dto);

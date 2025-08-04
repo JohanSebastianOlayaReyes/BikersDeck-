@@ -15,14 +15,30 @@ namespace Web.ServiceExtension
             {
                 options.AddPolicy("AllowSpecificOrigins", builder =>
                 {
-                    builder.WithOrigins(configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new string[] { "http://localhost:3000" })
+                    var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ??
+                                       new string[] { "http://localhost:3000/", "http://localhost:5173/" };
+
+                    builder.WithOrigins(allowedOrigins)
                         .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+
+                // Política completamente abierta para desarrollo
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.SetIsOriginAllowed(origin => true) // Permite cualquier origen incluyendo file://
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
             });
 
             // Registra AutoMapper
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(cfg => 
+            {
+                cfg.AddMaps(typeof(GameProfile).Assembly); // se pone asi por la version de la libreria
+            });
 
             return services;
         }

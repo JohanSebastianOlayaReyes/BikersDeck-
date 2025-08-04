@@ -1,48 +1,100 @@
-using Business.Implements;
-using Business.Interfaces;
-using Data.Implements;
-using Data.Implements.BaseData;
-using Data.Interfaces;
-using FluentValidation;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Utilities.Mappers.Profiles;
+using Business.Interfaces;
+using Business.Implements;
 using Web.ServiceExtension;
+using FluentValidation;
+using Data.Implements.BaseData;
+using Back_end.Context;
+using Data.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar Kestrel para aceptar conexiones de cualquier IP
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(7147); // HTTP en puerto 7147
+    // También configurar para HTTPS en desarrollo
+    if (builder.Environment.IsDevelopment())
+    {
+        serverOptions.ListenAnyIP(7148, listenOptions =>
+        {
+            listenOptions.UseHttps(); // HTTPS en puerto 7148
+        });
+    }
+});
+
 // Add controllers
-builder.Services.AddControllers();
-builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
-
 
 // Swagger
 builder.Services.AddSwaggerDocumentation();
 
-// DbContext
+// Configuración de base de datos dinámica
+var databaseProvider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "MySql";
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    switch (databaseProvider.ToLower())
+    {
+        case "mysql":
+            var mysqlConnection = builder.Configuration.GetConnectionString("MySqlConnection") 
+                ?? builder.Configuration.GetConnectionString("DefaultConnection");
+            options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection));
+            break;
+        
+        case "sqlserver":
+            var sqlServerConnection = builder.Configuration.GetConnectionString("SqlServerConnection");
+            options.UseSqlServer(sqlServerConnection);
+            break;
+        
+        default:
+            // Por defecto usar MySQL con Pomelo
+            var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+            options.UseMySql(defaultConnection, ServerVersion.AutoDetect(defaultConnection));
+            break;
+    }
+});
 
-// Register generic repositories and business logic
-builder.Services.AddScoped(typeof(IBaseModelData<>), typeof(BaseModelData<>));
-builder.Services.AddScoped(typeof(IBaseBusiness<,>), typeof(BaseBusiness<,>));
 
-builder.Services.AddScoped<IClienteData, ClienteData>();
-builder.Services.AddScoped<IClienteBusiness, ClienteBusiness>();
+// AutoMapper: registra todos los perfiles del ensamblado donde están definidos
+builder.Services.AddAutoMapper(typeof(PlayersProfile).Assembly);
 
-builder.Services.AddScoped<IPizzaData, PizzaData>();
-builder.Services.AddScoped<IPizzaBusiness, PizzaBusiness>();
+// Player
+builder.Services.AddScoped<IPlayerData, PlayerData>();
+builder.Services.AddScoped<IPlayerBusiness, PlayerBusiness>();
 
-builder.Services.AddScoped<IPedidoData, PedidoData>();
-builder.Services.AddScoped<IPedidoBusiness, PedidoBusiness>();
+// RoomPlayers
+builder.Services.AddScoped<IRoomPlayersData, RoomPlayerData>();
+builder.Services.AddScoped<IRoomPlayersBusiness, RoomPlayersBusiness>();
 
-builder.Services.AddAutoMapper(typeof(PlayersProfile));
-builder.Services.AddAutoMapper(typeof(PizzaProfile));
-builder.Services.AddAutoMapper(typeof(PedidoProfile));
+// Game
+builder.Services.AddScoped<IGameData, GameData>();
+builder.Services.AddScoped<IGameBusiness, GameBusiness>();
+
+// Mazo
+builder.Services.AddScoped<IMazoData, MazoData>();
+builder.Services.AddScoped<IMazoBusiness, MazoBusiness>();
+
+// Card
+builder.Services.AddScoped<ICardData, CardData>();
+builder.Services.AddScoped<ICardBusiness, CardBusiness>();
+
+// Round
+builder.Services.AddScoped<IRoundData, RoundData>();
+builder.Services.AddScoped<IRoundBusiness, RoundBusiness>();
+
+// Turn
+builder.Services.AddScoped<ITurnData, TurnData>();
+builder.Services.AddScoped<ITurnBusiness, TurnBusiness>();
 
 
 
+// Registrar logging
+builder.Services.AddLogging();
+
+// AutoMapper
 
 var app = builder.Build();
 
@@ -52,15 +104,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Sistema de Gestión v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Sistema de Accesorios para tienda virtual");
         c.RoutePrefix = string.Empty;
     });
 }
 
-// Usa la política de CORS registrada en ApplicationServiceExtensions
-app.UseCors("AllowSpecificOrigins");
+// Usa la política de CORS completamente abierta en desarrollo
+app.UseCors("AllowAll");
 
-app.UseHttpsRedirection();
+// Deshabilitar HTTPS redirection para desarrollo local
+// app.UseHttpsRedirection();
 
 // Autenticación y autorización
 app.UseAuthentication();
@@ -69,22 +122,75 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Inicializar base de datos y aplicar migraciones
-using (var scope = app.Services.CreateScope())
+await InitializeDatabaseAsync(app.Services);
+
+app.Run();
+
+/// <summary>
+/// Inicializa la base de datos de manera segura, eliminando y recreando si hay conflictos
+/// </summary>
+static async Task InitializeDatabaseAsync(IServiceProvider serviceProvider)
 {
+    using var scope = serviceProvider.CreateScope();
     var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var configuration = services.GetRequiredService<IConfiguration>();
+    
     try
     {
         var dbContext = services.GetRequiredService<ApplicationDbContext>();
-        var logger = services.GetRequiredService<ILogger<Program>>();
-
-        dbContext.Database.Migrate();
-        logger.LogInformation("Base de datos verificada y migraciones aplicadas exitosamente.");
+        var databaseProvider = configuration.GetValue<string>("DatabaseProvider") ?? "MySql";
+        
+        logger.LogInformation($"Inicializando base de datos con proveedor: {databaseProvider}");
+        
+        // Verificar si existen migraciones pendientes
+        var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync();
+        var appliedMigrations = await dbContext.Database.GetAppliedMigrationsAsync();
+        
+        logger.LogInformation($"Migraciones aplicadas: {appliedMigrations.Count()}");
+        logger.LogInformation($"Migraciones pendientes: {pendingMigrations.Count()}");
+        
+        if (pendingMigrations.Any())
+        {
+            logger.LogInformation("Hay migraciones pendientes. Verificando estado de la base de datos...");
+            
+            try
+            {
+                // Intentar aplicar migraciones normalmente
+                await dbContext.Database.MigrateAsync();
+                logger.LogInformation("Migraciones aplicadas exitosamente.");
+            }
+            catch (Exception migrationEx)
+            {
+                logger.LogWarning($"Error al aplicar migraciones: {migrationEx.Message}");
+                logger.LogInformation("Eliminando y recreando la base de datos...");
+                
+                // Si hay error, eliminar y recrear la base de datos
+                await dbContext.Database.EnsureDeletedAsync();
+                logger.LogInformation("Base de datos eliminada.");
+                
+                await dbContext.Database.MigrateAsync();
+                logger.LogInformation("Base de datos recreada con éxito.");
+            }
+        }
+        else
+        {
+            logger.LogInformation("No hay migraciones pendientes. Base de datos actualizada.");
+        }
+        
+        // Verificar conectividad
+        if (await dbContext.Database.CanConnectAsync())
+        {
+            logger.LogInformation($"Conexión a la base de datos {databaseProvider} verificada exitosamente.");
+        }
+        else
+        {
+            logger.LogError($"No se pudo conectar a la base de datos {databaseProvider}.");
+        }
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ocurrió un error durante la migración de la base de datos.");
+        logger.LogError(ex, "Error crítico durante la inicialización de la base de datos.");
+        throw; // Re-lanzar para detener la aplicación si no se puede inicializar la BD
     }
 }
-
-app.Run();

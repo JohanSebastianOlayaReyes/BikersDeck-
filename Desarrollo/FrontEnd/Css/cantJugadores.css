@@ -1,0 +1,304 @@
+body {
+    font-family: 'Arial Black', Arial, sans-serif;
+    background-image: url('/Img/Background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Botón cartas en esquina superior derecha */
+.cards-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #f39c12;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.cards-btn:hover {
+    background: #e67e22;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Contenedor principal */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* Logo */
+/* Logo container */
+.logo-container {
+    padding: 0;
+    margin-top: 40px;
+    margin-bottom: 60px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.logo-image {
+    width: 60vw;
+    max-width: 650px;
+    min-width: 200px;
+    height: auto;
+    animation: fadeInUp 0.8s ease-out;
+    display: block;
+}
+
+
+/* Título de selección */
+.selection-title {
+    color: white;
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 50px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    line-height: 1.2;
+}
+
+/* Grid de botones de jugadores */
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Botones de cantidad de jugadores */
+.player-btn {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    border: none;
+    border-radius: 15px;
+    padding: 25px;
+    font-size: 3em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-btn:hover {
+    background: linear-gradient(45deg, #e67e22, #d35400);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.player-btn:active {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.player-btn.selected {
+    background: linear-gradient(45deg, #27ae60, #2ecc71);
+    box-shadow: 0 8px 25px rgba(39,174,96,0.4);
+}
+
+.player-btn.selected:hover {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+}
+
+/* Mensaje de estado */
+.status-message {
+    color: white;
+    font-size: 1.3em;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    font-weight: 500;
+}
+
+/* Botón continuar */
+.continue-btn {
+    background: linear-gradient(45deg, #27ae60, #2ecc71);
+    border: none;
+    border-radius: 15px;
+    padding: 20px 60px;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.continue-btn:hover {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+}
+
+.continue-btn:active {
+    transform: translateY(0px);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.main-container {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .cards-btn {
+        top: 15px;
+        right: 15px;
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+    
+    .logo-container {
+        padding: 20px 30px;
+        margin-bottom: 30px;
+    }
+    
+    .logo-title {
+        font-size: 2.5em;
+    }
+    
+    .logo-subtitle {
+        font-size: 1.2em;
+        letter-spacing: 4px;
+    }
+    
+    .selection-title {
+        font-size: 1.8em;
+        margin-bottom: 30px;
+    }
+    
+    .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 400px;
+    }
+    
+    .player-btn {
+        font-size: 2.5em;
+        padding: 20px;
+        min-height: 80px;
+    }
+    
+    .status-message {
+        font-size: 1.1em;
+    }
+    
+    .continue-btn {
+        padding: 15px 40px;
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-title {
+        font-size: 2em;
+    }
+    
+    .logo-subtitle {
+        font-size: 1em;
+        letter-spacing: 2px;
+    }
+    
+    .selection-title {
+        font-size: 1.5em;
+    }
+    
+    .players-grid {
+        gap: 15px;
+        max-width: 320px;
+    }
+    
+    .player-btn {
+        font-size: 2em;
+        padding: 15px;
+        min-height: 70px;
+    }
+    
+    .continue-btn {
+        padding: 12px 30px;
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 360px) {
+    .players-grid {
+        grid-template-columns: 1fr;
+        max-width: 200px;
+    }
+    
+    .player-btn {
+        font-size: 2.2em;
+        min-height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo-image {
+        width: 70vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-image {
+        width: 80vw;
+    }
+}
+
+@media (max-width: 360px) {
+    .logo-image {
+        width: 85vw;
+    }
+}

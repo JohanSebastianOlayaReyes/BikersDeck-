@@ -1,26 +1,13 @@
-﻿using Data.Implements.BaseData;
-using Data.Interfaces;
+﻿using Back_end.Context;
+using Data.Interface;
 using Entity.Model;
 
-namespace Data.Implements
+namespace Data.Implements.BaseData
 {
     public class MazoData : BaseModelData<Mazo>, IMazoData
     {
         public MazoData(ApplicationDbContext context) : base(context)
         {
-        }
-        public async Task<bool> UpdatePartial(Mazo mazo)
-        {
-            var existingMazo = await _dbSet.FindAsync(mazo.Id);
-            foreach (var prop in typeof(Mazo).GetProperties().Where(p => p.CanWrite && p.Name != "Id"))
-            {
-                var val = prop.GetValue(mazo);
-                if (val != null && (!(val is string s) || !string.IsNullOrWhiteSpace(s)))
-                    prop.SetValue(existingMazo, val);
-            }
-
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> ActiveAsync(int id, bool active)
@@ -29,8 +16,24 @@ namespace Data.Implements
             if (mazo == null)
                 return false;
 
-            mazo.Active = active;
-            _context.Entry(mazo).Property(c => c.Active).IsModified = true;
+            mazo.Status = active;
+            mazo.DeleteAt = DateTime.UtcNow;
+
+            _context.Entry(mazo).Property(m => m.Status).IsModified = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdatePartial(Mazo mazo)
+        {
+            var existingMazo = await _context.Mazos.FindAsync(mazo.Id);
+            if (existingMazo == null)
+                return false;
+
+            existingMazo.QuantityCards = mazo.QuantityCards;
+
+            _context.Entry(existingMazo).Property(m => m.QuantityCards).IsModified = true;
+
 
             await _context.SaveChangesAsync();
             return true;

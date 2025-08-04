@@ -12,7 +12,7 @@ namespace Entity.Model
         public int speed { get; set; }
         public int model { get; set; }
         public int CylinderNumber { get; set; }
-        public ICollection<Mazo> Mazo { get; set; }
-
+        public Mazo Mazo { get; set; }
+        public int MazoId { get; set; }
     }
 }

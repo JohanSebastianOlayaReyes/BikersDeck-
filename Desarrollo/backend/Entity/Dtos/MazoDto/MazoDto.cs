@@ -1,11 +1,11 @@
 ﻿using Entity.Dtos.Base;
+using Entity.Model;
 
 namespace Entity.Dtos.PizzaDto
 {
     public class MazoDto : GenericDto
     {
-        public string QuantityPlayers { get; set; }
-        public bool Active { get; set; }    
-
+        public int QuantityCards { get; set; }
+        public int CardId { get; set; }
     }
 }

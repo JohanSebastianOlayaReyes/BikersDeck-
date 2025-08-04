@@ -1,0 +1,261 @@
+body {
+    font-family: 'Arial Black', Arial, sans-serif;
+    background-image: url('/Img/Background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;  
+}
+
+/* Logo */
+.logo-container {
+    padding: 0;
+    margin-bottom: 80px;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.logo-image {
+    width: 650px;
+    max-width: 90vw;
+    height: auto;
+    animation: fadeInUp 0.8s ease-out;
+    display: block;
+}
+
+/* Input del jugador */
+.player-input-container {
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.player-input {
+    width: 100%;
+    background: rgba(200, 200, 200, 0.9);
+    border: 3px solid #bdc3c7;
+    border-radius: 15px;
+    padding: 20px 25px;
+    font-size: 1.4em;
+    font-weight: bold;
+    text-align: center;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.player-input:focus {
+    outline: none;
+    border-color: #f39c12;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3);
+    transform: translateY(-2px);
+}
+
+.player-input::placeholder {
+    color: #7f8c8d;
+    opacity: 0.8;
+}
+
+/* Botón siguiente */
+.next-btn {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    border: none;
+    border-radius: 15px;
+    padding: 20px 60px;
+    font-size: 1.8em;
+    font-weight: 900;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    min-width: 200px;
+}
+
+.next-btn:hover {
+    background: linear-gradient(45deg, #e67e22, #d35400);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.next-btn:active {
+    transform: translateY(0px);
+}
+
+.next-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Indicador de progreso */
+.progress-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.progress-text {
+    color: white;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.5);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.container {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.player-input:focus {
+    animation: pulse 0.6s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .logo-box {
+        padding: 20px 30px;
+        margin-bottom: 40px;
+    }
+    
+    .logo-title {
+        font-size: 2.5em;
+    }
+    
+    .logo-subtitle {
+        font-size: 1.2em;
+        letter-spacing: 4px;
+    }
+    
+    .player-input {
+        font-size: 1.2em;
+        padding: 18px 20px;
+    }
+    
+    .next-btn {
+        font-size: 1.5em;
+        padding: 18px 40px;
+        margin-bottom: 30px;
+    }
+    
+    .progress-text {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-title {
+        font-size: 2em;
+    }
+    
+    .logo-subtitle {
+        font-size: 1em;
+        letter-spacing: 2px;
+    }
+    
+    .player-input {
+        font-size: 1.1em;
+        padding: 15px 18px;
+    }
+    
+    .next-btn {
+        font-size: 1.3em;
+        padding: 15px 35px;
+    }
+    
+    .progress-text {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 320px) {
+    .logo-box {
+        padding: 15px 20px;
+    }
+    
+    .logo-title {
+        font-size: 1.8em;
+    }
+    
+    .player-input {
+        font-size: 1em;
+        padding: 12px 15px;
+    }
+    
+    .next-btn {
+        font-size: 1.2em;
+        padding: 12px 30px;
+    }
+}

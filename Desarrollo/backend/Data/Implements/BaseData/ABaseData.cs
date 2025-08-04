@@ -1,19 +1,13 @@
-﻿using Data.Interfaces;
+﻿using Back_end.Context;
+using Data.Interface;
 using Entity.Model.Base;
 using Microsoft.EntityFrameworkCore;
 
-using static Dapper.SqlMapper;
-
-namespace Data.Implements.BaseDate
+namespace Data.Implements.BaseData
 {
-
-    /// <summary>
-    /// Clase abstracta para poder sobre escribir métodos e incluir nuevos metodos sin cambiar la Interfaz
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public abstract class ABaseModelData<T> : IBaseModelData<T> where T : BaseModel
     {
-    
+
         protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
@@ -29,6 +23,5 @@ namespace Data.Implements.BaseDate
         public abstract Task<T> CreateAsync(T entity);
         public abstract Task<T> UpdateAsync(T entity);
         public abstract Task<bool> DeleteAsync(int id);
-
     }
 }

@@ -1,8 +1,6 @@
-﻿using Data.Implements.BaseDate;
+﻿using Back_end.Context;
 using Entity.Model.Base;
 using Microsoft.EntityFrameworkCore;
-
-using static Dapper.SqlMapper;
 
 namespace Data.Implements.BaseData
 {
@@ -25,6 +23,9 @@ namespace Data.Implements.BaseData
 
         public override async Task<T> CreateAsync(T entity)
         {
+            entity.CreatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = null;
+
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;
@@ -32,13 +33,21 @@ namespace Data.Implements.BaseData
 
         public override async Task<T> UpdateAsync(T entity)
         {
-            _context.Set<T>().Update(entity);
+            var existing = await _context.Set<T>().FindAsync(entity.Id);
+            if (existing == null) return null;
+
+            _context.Entry(existing).CurrentValues.SetValues(entity);
+            existing.UpdatedAt = DateTime.UtcNow;
+
             await _context.SaveChangesAsync();
-            return entity;
+            return existing;
         }
 
 
-        public override  async Task<bool> DeleteAsync(int id)
+
+
+
+        public override async Task<bool> DeleteAsync(int id)
         {
             var entity = await _context.Set<T>().FindAsync(id);
             if (entity == null) return false;
@@ -47,7 +56,5 @@ namespace Data.Implements.BaseData
             await _context.SaveChangesAsync();
             return true;
         }
-
-       
     }
 }

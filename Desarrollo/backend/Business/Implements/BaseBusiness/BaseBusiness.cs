@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
-using Data.Interfaces;
+using Back_end.Context;
+using Data.Interface;
 using Entity.Dtos.Base;
 using Entity.Model.Base;
 using Microsoft.Extensions.Logging;
 
 namespace Business.Implements
 {
-    public class BaseBusiness<T, D> : ABaseBusiness<T, D>
-        where T : BaseModel
-        where D : BaseDto
+
+    public class BaseBusiness<T, D> : ABaseBusiness<T, D> where T : BaseModel where D : BaseDto
     {
+
         protected readonly IMapper _mapper;
 
         protected readonly IBaseModelData<T> _data;
@@ -19,34 +20,69 @@ namespace Business.Implements
         public BaseBusiness(
             IBaseModelData<T> data,
             IMapper mapper,
-            ILogger logger
-         )
+            ILogger logger)
             : base()
         {
-            _data = data ?? throw new ArgumentNullException(nameof(data));
+            _data = data;
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger;
         }
-        // metodo para obtener un registro por ID
+
+        public BaseBusiness(ApplicationDbContext context)
+        {
+        }
+
+        public override async Task<List<D>> GetAllAsync()
+        {
+            try
+            {
+                var entities = await _data.GetAllAsync();
+                _logger.LogInformation($"Obteniendo todos los registros de {typeof(T).Name}");
+                return _mapper.Map<IList<D>>(entities).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al obtener registros de {typeof(T).Name}: {ex.Message}");
+                throw;
+            }
+        }
+
         public override async Task<D> GetByIdAsync(int id)
         {
             try
             {
+                var entities = await _data.GetByIdAsync(id);
                 _logger.LogInformation($"Obteniendo {typeof(T).Name} con ID: {id}");
-                var entity = await _data.GetByIdAsync(id);
+                return _mapper.Map<D>(entities);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al obtener {typeof(T).Name} con ID {id}: {ex.Message}");
+                throw;
+            }
+        }
+
+        public override async Task<D> CreateAsync(D dto)
+        {
+            try
+            {
+                var entity = _mapper.Map<T>(dto);
+                entity = await _data.CreateAsync(entity);
+                _logger.LogInformation($"Creando nuevo {typeof(T).Name}");
                 return _mapper.Map<D>(entity);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al obtener {typeof(T).Name} con ID {id}");
+                _logger.LogError($"Error al crear {typeof(T).Name} desde DTO: {ex.Message}");
                 throw;
             }
         }
-        // metodo para actualizar un registro
+
         public override async Task<D> UpdateAsync(D dto)
         {
             try
             {
+
                 var entity = _mapper.Map<T>(dto);
                 entity = await _data.UpdateAsync(entity);
                 _logger.LogInformation($"Actualizando {typeof(T).Name} desde DTO");
@@ -54,13 +90,12 @@ namespace Business.Implements
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al actualizar {typeof(T).Name} desde DTO");
+                _logger.LogError($"Error al actualizar {typeof(T).Name} desde DTO: {ex.Message}");
                 throw;
             }
         }
 
-        //metodo para eleminar un registro
-        public override async Task<bool> ActiveAsync(int id)
+        public override async Task<bool> DeleteAsync(int id)
         {
             try
             {
@@ -69,9 +104,10 @@ namespace Business.Implements
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al eliminar {typeof(T).Name} con ID {id}");
+                _logger.LogError($"Error al eliminar {typeof(T).Name} con ID {id}: {ex.Message}");
                 throw;
             }
         }
+
     }
 }

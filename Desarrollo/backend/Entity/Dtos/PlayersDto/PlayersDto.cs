@@ -1,11 +1,10 @@
 ﻿using Entity.Dtos.Base;
 
-namespace Entity.Dtos.PizzaDto
+namespace Entity.Dtos.PlayersDto
 {
-    public  class PizzaDto : GenericDto
+    public  class PlayersDto : GenericDto
     {
-        public decimal Precio { get; set; }
-        public bool Active { get; set; }
+        public int QuantityPlayers { get; set; }
 
     }
 }

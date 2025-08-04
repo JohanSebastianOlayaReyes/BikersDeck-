@@ -4,8 +4,8 @@ namespace Entity.Dtos.PizzaDto
 {
     public class RoundDto : GenericDto
     {
-        public string QuantityPlayers { get; set; }
-        public bool Active { get; set; }
+        public int Points { get; set; }
+        public int GameId { get; set; }
 
     }
 }

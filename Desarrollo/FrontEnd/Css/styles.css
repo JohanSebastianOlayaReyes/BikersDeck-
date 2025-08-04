@@ -1,0 +1,134 @@
+body {
+    font-family: 'Arial Black', Arial, sans-serif;
+    background-image: url('/Img/Background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Contenedor principal */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    z-index: 10;
+}
+
+/* Logo container */
+.logo-container {
+    padding: 0;
+    margin-bottom: 60px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.logo-image {
+    width: 60vw;
+    max-width: 750px;
+    height: auto;
+    animation: fadeInUp 0.8s ease-out;
+    display: block;
+}
+
+/* Botón de jugar */
+.play-button {
+    background: linear-gradient(145deg, #f39c12, #e67e22);
+    border: none;
+    border-radius: 15px;
+    padding: 25px 80px;
+    font-size: 2.2em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 
+        0 8px 25px rgba(243, 156, 18, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.play-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.play-button:hover {
+    background: linear-gradient(145deg, #e67e22, #d35400);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 12px 35px rgba(243, 156, 18, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.play-button:hover::before {
+    left: 100%;
+}
+
+.play-button:active {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 
+        0 6px 20px rgba(243, 156, 18, 0.4),
+        0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .logo-image {
+        width: 70vw;
+    }
+
+    .play-button {
+        padding: 20px 60px;
+        font-size: 1.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-image {
+        width: 80vw;
+    }
+
+    .play-button {
+        padding: 18px 40px;
+        font-size: 1.4em;
+    }
+}

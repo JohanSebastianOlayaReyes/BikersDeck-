@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIKERS DECK - Nombres de Jugadores</title>
+    <link rel="stylesheet" href="/Css/nombreJugadores.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Logo principal -->
+        <div class="logo-container">
+            <div class="logo-box">
+                <img src="/Img/bike-icon.png" alt="Logo Bikers Deck" class="logo-image">
+            </div>
+        </div>
+
+        <!-- Input del nombre del jugador -->
+        <div class="player-input-container">
+            <input type="text" id="playerNameInput" class="player-input" placeholder="Ingresa tu nombre" maxlength="15">
+        </div>
+
+        <!-- Botón siguiente -->
+        <button id="nextBtn" class="next-btn" onclick="nextPlayer()">
+            <span id="btnText">Siguiente</span>
+        </button>
+
+        <!-- Indicador de progreso -->
+        <div class="progress-container">
+            <div class="progress-text">
+                <span id="currentPlayer">Jugador 1</span> de <span id="totalPlayers">4</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/nombreJugadores.js"></script>
+</body>
+</html>

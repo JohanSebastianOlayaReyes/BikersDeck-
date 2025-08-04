@@ -1,13 +1,13 @@
 ﻿using Entity.Dtos.PizzaDto;
+using Entity.Dtos.PlayersDto;
 using Entity.Model;
 
 namespace Business.Interfaces
 {
-    public interface IPlayersBusiness : IBaseBusiness<Players, PlayersDto>
+    public interface IPlayerBusiness : IBaseBusiness<Players, PlayersDto>
     {
 
-        Task<bool> UpdatePartialAsync(PlayersUpdateDto dto);
-        Task<bool> ActiveAsync(RoomPlayersaActiveDto dto);
-
+        Task<bool> UpdatePartialPlayerAsync(UpdatePlayersDto dto);
+        Task<bool> DeleteLogicPlayerAsync(DeleteLogicPlayersDto dto);
     }
 }

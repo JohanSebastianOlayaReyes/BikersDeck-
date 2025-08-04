@@ -1,26 +1,13 @@
-﻿using Data.Implements.BaseData;
-using Data.Interfaces;
+﻿using Back_end.Context;
+using Data.Interface;
 using Entity.Model;
 
-namespace Data.Implements
+namespace Data.Implements.BaseData
 {
     public class RoundData : BaseModelData<Round>, IRoundData
     {
         public RoundData(ApplicationDbContext context) : base(context)
         {
-        }
-        public async Task<bool> UpdatePartial(Round round)
-        {
-            var existingRound = await _dbSet.FindAsync(round.Id);
-            foreach (var prop in typeof(Round).GetProperties().Where(p => p.CanWrite && p.Name != "Id"))
-            {
-                var val = prop.GetValue(round);
-                if (val != null && (!(val is string s) || !string.IsNullOrWhiteSpace(s)))
-                    prop.SetValue(existingRound, val);
-            }
-
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> ActiveAsync(int id, bool active)
@@ -29,8 +16,25 @@ namespace Data.Implements
             if (round == null)
                 return false;
 
-            round.Active = active;
-            _context.Entry(round).Property(c => c.Active).IsModified = true;
+            round.Status = active;
+            round.DeleteAt = DateTime.UtcNow;
+
+            _context.Entry(round).Property(r => r.Status).IsModified = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdatePartial(Round round)
+        {
+            var existingRound = await _context.Rounds.FindAsync(round.Id);
+            if (existingRound == null)
+                return false;
+
+            existingRound.Points = round.Points;
+
+
+            _context.Entry(existingRound).Property(r => r.Points).IsModified = true;
+
 
             await _context.SaveChangesAsync();
             return true;

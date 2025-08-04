@@ -1,36 +1,41 @@
-﻿using Data.Implements.BaseData;
-using Data.Interfaces;
+﻿using Back_end.Context;
+using Data.Interface;
 using Entity.Model;
 
-namespace Data.Implements
+namespace Data.Implements.BaseData
 {
-    public class PlayerData : BaseModelData<Players>, IPlayersData
+    public class PlayerData : BaseModelData<Players>, IPlayerData
     {
         public PlayerData(ApplicationDbContext context) : base(context)
         {
         }
-        public async Task<bool> UpdatePartial(Players players)
-        {
-            var existingPlayers = await _dbSet.FindAsync(players.Id);
-            foreach (var prop in typeof(Players).GetProperties().Where(p => p.CanWrite && p.Name != "Id"))
-            {
-                var val = prop.GetValue(players);
-                if (val != null && (!(val is string s) || !string.IsNullOrWhiteSpace(s)))
-                    prop.SetValue(existingPlayers, val);
-            }
 
+        public async Task<bool> ActiveAsync(int id, bool active)
+        {
+            var player = await _context.Set<Players>().FindAsync(id);
+            if (player == null)
+                return false;
+
+            // Actualizar el estado del jugador
+            player.Status = active;
+            player.DeleteAt = DateTime.UtcNow;
+
+            _context.Entry(player).Property(p => p.Status).IsModified = true;
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> ActiveAsync(int id, bool active)
+        public async Task<bool> UpdatePartial(Players player)
         {
-            var players = await _context.Set<Players>().FindAsync(id);
-            if (players == null)
+            var existingPlayer = await _context.Players.FindAsync(player.Id);
+            if (existingPlayer == null)
                 return false;
 
-            players.Active = active;
-            _context.Entry(players).Property(c => c.Active).IsModified = true;
+            // Solo se actualizan campos permitidos
+            existingPlayer.QuantityPlayers = player.QuantityPlayers;
+
+            // Marcar explícitamente los campos modificados
+            _context.Entry(existingPlayer).Property(p => p.QuantityPlayers).IsModified = true;
 
             await _context.SaveChangesAsync();
             return true;

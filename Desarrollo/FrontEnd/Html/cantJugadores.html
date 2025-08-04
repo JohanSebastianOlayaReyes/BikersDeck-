@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BIKERS DECK - Triple J</title>
+  <link rel="stylesheet" href="/Css/cantJugadores.css" />
+</head>
+<body>
+  <!-- Botón cartas en esquina superior derecha -->
+  <button class="cards-btn" onclick="showCards()">Cartas</button>
+
+  <!-- LOGO que se mantiene en ambas pantallas -->
+  <div class="logo-container">
+    <img src="/Img/bike-icon.png" alt="Logo Bikers Deck" class="logo-image">
+  </div>
+
+  <!-- PANTALLA 1: Selección de jugadores -->
+  <div id="pantallaSeleccion" class="main-container">
+    <div class="selection-title">
+      Elige la cantidad de<br />jugadores
+    </div>
+
+    <div class="players-grid">
+      <button class="player-btn" data-players="2" onclick="selectPlayers(2)">2</button>
+      <button class="player-btn" data-players="3" onclick="selectPlayers(3)">3</button>
+      <button class="player-btn" data-players="4" onclick="selectPlayers(4)">4</button>
+      <button class="player-btn" data-players="5" onclick="selectPlayers(5)">5</button>
+      <button class="player-btn" data-players="6" onclick="selectPlayers(6)">6</button>
+      <button class="player-btn" data-players="7" onclick="selectPlayers(7)">7</button>
+    </div>
+
+    <div class="status-message" id="statusMessage">
+      Selecciona la cantidad de jugadores para continuar
+    </div>
+
+    <button class="continue-btn" id="continueBtn" onclick="continueGame()" style="display: none;">
+      Continuar
+    </button>
+  </div>
+
+  <!-- PANTALLA 2: Nombres de jugadores -->
+  <div id="pantallaNombres" class="main-container" style="display: none;">
+    <div class="selection-title">Ingresa los nombres de los jugadores</div>
+    <div id="inputsContainer" class="players-grid" style="grid-template-columns: 1fr;"></div>
+
+    <button class="continue-btn" onclick="startGame()">Iniciar juego</button>
+  </div>
+
+  <script src="/js/cantJugadores.js"></script>
+</body>
+</html>

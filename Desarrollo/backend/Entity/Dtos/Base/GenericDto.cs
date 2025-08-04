@@ -2,7 +2,7 @@
 {
     public class GenericDto : BaseDto
     {
-        public string Name { get; set; }
+        public bool Status { get; set; }
 
     }
 }

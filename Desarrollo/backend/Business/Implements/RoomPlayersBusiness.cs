@@ -1,49 +1,53 @@
 ﻿using AutoMapper;
 using Business.Interfaces;
-using Data.Implements;
-using Data.Interfaces;
-using Entity.Dtos.ClienteDto;
+using Data.Interface;
 using Entity.Dtos.PedidoDto;
 using Entity.Dtos.PizzaDto;
+using Entity.Dtos.RoomPlayersDto;
 using Entity.Model;
-using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Utilities.Exceptions;
-using ValidationException = Utilities.Exceptions.ValidationException;
 
 namespace Business.Implements
 {
     public class RoomPlayersBusiness : BaseBusiness<RoomPlayers, RoomPlayersDto>, IRoomPlayersBusiness
     {
-        private readonly IRoomPlayersData _clienteData;
-        private readonly IValidator<RoomPlayersDto> _validator;
-        private object roomplayersData;
+        private readonly IRoomPlayersData _roomPlayersData;
 
-        public RoomPlayersBusiness(IRoomPlayersData roomplayersData, IMapper mapper, ILogger<RoomPlayersBusiness> logger)
-            : base( roomplayersData, mapper, logger)
+        public RoomPlayersBusiness(
+            IRoomPlayersData roomPlayersData,
+            IMapper mapper,
+            ILogger<RoomPlayersBusiness> logger)
+            : base(roomPlayersData, mapper, logger)
         {
-            roomplayersData = roomplayersData;
+            _roomPlayersData = roomPlayersData;
         }
 
-        public async Task<bool> UpdatePartialAsync(RoomPlayersUpdateDto dto)
+        /// <summary>
+        /// Actualiza parcialmente una relación RoomPlayers existente.
+        /// </summary>
+        public async Task<bool> UpdatePartialRoomPlayersAsync(UpdateRoomPlayersDto dto)
         {
-            if (dto == null || dto.Id == 0)
-                return false;
+            if (dto.Id <= 0)
+                throw new ArgumentException("ID inválido.");
 
-            var roomplayers = _mapper.Map<RoomPlayers>(dto);
-
-            return await roomplayersData.UpdatePartial(roomplayers);
+            var entity = _mapper.Map<RoomPlayers>(dto);
+            var result = await _roomPlayersData.UpdatePartial(entity);
+            return result;
         }
 
-        public async Task<bool> ActiveAsync(RoomPlayersaActiveDto dto)
+        /// <summary>
+        /// Desactiva una relación RoomPlayers (eliminación lógica).
+        /// </summary>
+        public async Task<bool> DeleteLogicRoomPlayerAsync(DeleteLogicRoomPlayersDto dto)
         {
             if (dto == null || dto.Id <= 0)
-                throw new ValidationException("Id", "El ID del ... es inválido");
+                throw new ValidationException("Id", "El ID es inválido.");
 
-            var exists = await roomplayersData.GetByIdAsync(dto.Id)
-                ?? throw new EntityNotFoundException("...", dto.Id);
+            var exists = await _roomPlayersData.GetByIdAsync(dto.Id)
+                ?? throw new EntityNotFoundException("roomplayers", dto.Id);
 
-            return await roomplayersData.ActiveAsync(dto.Id, dto.Active);
+            return await _roomPlayersData.ActiveAsync(dto.Id, dto.Status);
         }
     }
 }

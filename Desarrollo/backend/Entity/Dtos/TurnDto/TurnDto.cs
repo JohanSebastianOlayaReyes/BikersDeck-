@@ -1,11 +1,12 @@
 ﻿using Entity.Dtos.Base;
+using Entity.Model;
 
 namespace Entity.Dtos.PizzaDto
 {
     public class TurnDto : GenericDto
     {
-        public string QuantityPlayers { get; set; }
-        public bool Active { get; set; }
-
+        public DateTime Time { get; set; }
+        public string Attribute { get; set; }
+        public int RoundId { get; set; }
     }
 }

@@ -7,5 +7,6 @@ namespace Data.Interface
     {
         Task<bool> ActiveAsync(int id, bool status);
         Task<bool> UpdatePartial(Players player);
+        int 
     }
 }

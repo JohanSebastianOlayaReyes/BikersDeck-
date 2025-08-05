@@ -98,6 +98,17 @@ builder.Services.AddLogging();
 // Registrar servicios de autorización
 builder.Services.AddAuthorization();
 
+// Registrar política CORS completamente abierta
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.WithOrigins("http://127.0.0.1:5500")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // AutoMapper
 
 var app = builder.Build();

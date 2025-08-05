@@ -275,3 +275,57 @@ function goToGameScreen() {
     // Implementar navegación hacia el juego
     window.location.href = 'game.html';
 }
+
+
+//para enviar jugadores a la API
+  let currentPlayer = 1;
+
+  async function nextPlayer() {
+    const input = document.getElementById("playerNameInput");
+    const playerName = input.value.trim();
+
+    if (!playerName) {
+      alert("Por favor, ingresa un nombre.");
+      return;
+    }
+
+    // Genera avatar aleatorio en frontend
+    //const avatars = ["avatar1.png", "avatar2.png", "avatar3.png", "avatar4.png"];
+    //const randomAvatar = avatars[Math.floor(Math.random() * avatars.length)];
+
+    const playerData = {
+      namePlayer: playerName,
+      avatar: String
+      // playersId NO se envía, DB lo asigna automáticamente
+    };
+
+    try {
+      const response = await fetch("http://localhost:7147/api/RoomPlayers",
+         {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(playerData)
+      });
+
+      if (!response.ok) throw new Error("Error al registrar jugador");
+
+      const result = await response.json();
+      console.log("Jugador registrado:", result);
+
+      // Limpiar input y actualizar contador
+      input.value = "";
+      currentPlayer++;
+      document.getElementById("currentPlayer").textContent = `Jugador ${currentPlayer}`;
+
+      // Opcional: puedes animar la barra sin límite, aquí un ejemplo con % fijo
+      const progressFill = document.getElementById("progressFill");
+      const newWidth = Math.min((currentPlayer - 1) * 10, 100); // ejemplo, 10% por jugador
+      progressFill.style.width = newWidth + "%";
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un problema al enviar el jugador.");
+    }
+  }
